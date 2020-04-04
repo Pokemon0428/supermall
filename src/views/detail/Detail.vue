@@ -166,7 +166,7 @@
         for (let i = 0; i<length - 1; i++) {
           if (this.currentIndex !== i && positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1]) {
             this.currentIndex = i
-            console.log(this.currentIndex)
+            // console.log(this.currentIndex)
             this.$refs.nav.currentIndex = this.currentIndex 
           }
         }

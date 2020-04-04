@@ -50,6 +50,7 @@
       scrollTo(x, y, time) {
         this.scroll && this.scroll.scrollTo(x, y, time)
       },
+      // 当上拉加载数据加载完毕后，需要调用此方法告诉 better-scroll 数据已加载
       finishPullUp() {
         this.scroll && this.scroll.finishPullUp()
       },
