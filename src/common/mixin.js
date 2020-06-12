@@ -1,38 +1,71 @@
-import {debounce} from 'common/utils'
-import BackTop from 'components/content/backTop/BackTop'
-
-export const itemListenerMixins = {
-  data() {
-    return {
-      newRefresh: null
-    }
-  },
-  mounted() {
-    this.newRefresh = debounce(this.$refs.scroll.refresh, 100)
-    
-    this.itemImgListener = () => {
-      this.newRefresh()
-    }
-    this.$bus.$on('itemImgLoad', this.itemImgListener)
-    // console.log('混入其中')
-  }
-}
+import {debounce} from './utils';
+import BackTop from 'components/content/backTop/BackTop';
+import {BACK_POSITION} from 'common/const';
+import {POP, SELL, NEW} from "@/common/const";
 
 export const backTopMixin = {
-  components: {
-    BackTop
-  },
-  data() {
-    return {
-      isShowBackTop: false
-    }
-  },
-  methods: {
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0, 300)
+    data(){
+        return{
+            isShowBackTop: false,
+        }
     },
-    listenShowBackTop(position) {
-      this.isShowBackTop = (-position.y) > 800
+    components:{
+        BackTop,
+    },
+    methods:{
+        backTop(){
+            this.$refs.scroll.scrollTo(0, 0, 300);
+        },
+        listenShowBackTop(position){
+            this.isShowBackTop = -position.y > BACK_POSITION;
+        }
     }
-  },
+
 }
+
+export const itemListenerMixin = {
+    data(){
+        return {
+            itemImgListener: null,
+            newRefresh: null,
+        }
+    },
+    methods:{
+
+    },
+    mounted(){
+        this.newRefresh = debounce(this.$refs.scroll.refresh, 100)
+
+        this.itemImgListener = () => {
+            this.newRefresh()
+            this.$router.go(0);
+        }
+
+        this.$bus.$on('itemImgLoad', this.itemImgListener)
+    }
+}
+
+
+export const tabControlMixin = {
+    data() {
+      return {
+        currentType: POP
+      }
+    },
+    methods: {
+      tabClick(index) {
+        switch (index) {
+          case 0:
+            this.currentType = POP
+            break
+          case 1:
+            this.currentType = NEW
+            break
+          case 2:
+            this.currentType = SELL
+            break
+        }
+        console.log(this.currentType);
+      }
+    }
+  }

@@ -3,13 +3,11 @@
       <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
         <slot></slot>
       </div>
-      <slot name="indicator"></slot>
+      <slot name="indicator">
+      </slot>
       <div class="indicator">
         <slot name="indicator" v-if="showIndicator && slideCount>1">
-          <div v-for="(item, index) in slideCount" 
-               class="indi-item" 
-               :class="{active: index === currentIndex-1}" 
-               :key="index.id"></div>
+          <div v-for="(item, index) in slideCount" class="indi-item" :class="{active: index === currentIndex-1}" :key="index.id"></div>
         </slot>
       </div>
     </div>
@@ -61,7 +59,7 @@
       startTimer: function () {
 		    this.playTimer = window.setInterval(() => {
 		      this.currentIndex++;
-          this.scrollContent(-this.currentIndex * this.totalWidth);
+		      this.scrollContent(-this.currentIndex * this.totalWidth);
         }, this.interval)
       },
       stopTimer: function () {
@@ -133,7 +131,6 @@
           swiperEl.insertBefore(cloneLast, slidesEls[0]);
           swiperEl.appendChild(cloneFirst);
           this.totalWidth = swiperEl.offsetWidth;
-          // console.log(this.totalWidth)
           this.swiperStyle = swiperEl.style;
         }
 

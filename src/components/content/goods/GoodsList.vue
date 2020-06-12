@@ -1,26 +1,31 @@
 <template>
-  <div class="goods">
-    <goods-list-item v-for="(item, index) in goods" :goods-item='item' :key='index'/>
+  <div class="goods" >
+    <goods-list-item v-for="item in goods" :product="item" :key="item.id"/>
   </div>
 </template>
 
 <script>
-
   import GoodsListItem from './GoodsListItem'
 
   export default {
-    name: 'GoodsList',
+    name: "GoodsList",
     components: {
       GoodsListItem
     },
     props: {
       goods: {
         type: Array,
-        default(){
+        default() {
           return []
         }
       }
-    }
+    },
+    methods:{
+      itemClick(){
+        this.$router.push('/detail');
+      }
+    },
+    
   }
 </script>
 
@@ -32,4 +37,6 @@
 
     padding: 2px;
   }
+
+
 </style>

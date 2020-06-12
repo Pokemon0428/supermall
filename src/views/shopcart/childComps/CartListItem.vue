@@ -1,5 +1,8 @@
 <template>
   <div id="shop-item">
+    <!-- <div class="item-selector">
+      <CheckButton @checkBtnClick="checkedChange" v-model="itemInfo.checked"></CheckButton>
+    </div>  -->
     <div class="item-selector">
       <check-button :is-checked="itemInfo.checked" @click.native="checkedChange"></check-button>
     </div>

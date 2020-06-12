@@ -1,38 +1,47 @@
 <template>
-  <div class="goods-item" @click='itemClick'>
-    <img v-lazy='showImage' @load='imageLoad'>
-    <div class="goods-info">
-      <p>{{goodsItem.title}}</p>
-      <span class="price">{{goodsItem.price}}</span>
-      <span class="collect">{{goodsItem.cfav}}</span>
+  <div class="goods-item" @click="itemClick">
+    <img v-lazy="showImage" alt="" @load="imgLoad">
+    <div class="goods-info" >
+      <p>{{product.title}}</p>
+      <span class="price">{{product.price}}</span>
+      <span class="collect">{{product.cfav}}</span>
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'GoodsListItem',
+    name: "GoodsListItem",
     props: {
-      goodsItem: {
+      product: {
         type: Object,
-        default(){
+        default() {
           return {}
         }
       }
     },
-    computed: {
+    created(){
+      //console.log(this.product)
+    },
+    computed:{
       showImage(){
-        return  this.goodsItem.image || this.goodsItem.show.img
+        return this.product.img || this.product.image || this.product.show.img;
       }
     },
-    methods: {
-      imageLoad(){
-        this.$bus.$emit('itemImageLoad')
+    methods:{
+      imgLoad(){
+        this.$bus.$emit('itemImageLoad');
+
+        // if(this.$route.path.indexOf('/home')){
+        //   this.$bus.$emit('homeItemImageLoad');
+        // } else if(this.$route.path.indexOf('/detail')){
+        //   this.$bus.$emit('detailItemImageLoad');
+        // }
       },
       itemClick(){
-        this.$router.push('/detail/' + this.goodsItem.iid)
+        this.$router.push('/detail/' + this.product.iid);
       }
-    },
+    }
   }
 </script>
 

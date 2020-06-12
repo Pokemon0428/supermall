@@ -1,26 +1,22 @@
-import {
-  ADD_COUNTER,
-  ADD_TO_CART
-} from './mutations-types'
-
-export default {
-  addCart(context, payLoad) {
+const actions = {
+  addCart(context, payload) {
     return new Promise((resolve, reject) => {
-      // 查找之前数组是否有该商品②
-      let oldProduct = context.state.cartList.find(item => item.iid === payLoad.iid)
+      let oldProduct = context.state.cartList.find(item => item.iid === payload.iid);
 
-      // 判断oldProduct
+      //console.log(context);
+
       if (oldProduct) {
-        // oldProduct.count += 1
-        context.commit(ADD_COUNTER, oldProduct)
-        resolve('商品数量加一')
+        //oldProduct.count += 1
+        context.commit('addCounter', oldProduct);
+        resolve('商品数量+1');
       } else {
-        payLoad.count = 1
-        payLoad.checked = true
-        // context.state.cartList.push(payLoad)
-        context.commit(ADD_TO_CART, payLoad)
-        resolve('添加新的商品')
+        payload.count = 1
+        context.commit('addToCart', payload)
+        resolve('添加商品成功');
       }
     })
+
   }
 }
+
+export default actions

@@ -1,70 +1,103 @@
 <template>
-  <div class="wrapper" ref="wrapper">
-    <div class="content">
-      <slot></slot>
+  <div ref="wrapper">
+    <div>
+      <slot>
+      </slot>
     </div>
   </div>
 </template>
 
 <script>
-  import BScroll from 'better-scroll'
-  export default {
-    name: 'Scroll',
-    data() {
-      return {
-        scroll: null
-      }
+import BScroll from 'better-scroll'
+export default {
+  name: 'Scroll',
+  props:{
+    probeType:{
+      type:Number,
+      default:0
     },
-    props: {
-      probeType: {
-        type: Number,
-        default: 0
-      },
-      pullUpLoad: {
-        type: Boolean,
-        default: false
-      }
-    },
-    mounted() {
-      // 创建Scroll对象
+    pullUpLoad:{
+      type: Boolean,
+      default: false
+    }
+  },
+  data() { 
+    return {
+        scroll:null
+    }
+  },
+  mounted(){
+    // setTimeout(this.__initScroll, 20);
+    // this.scroll = new BScroll(this.$refs.wrapper, {
+    //     click:true,
+    //     probeType: this.probeType,
+    //     pullUpLoad: this.pullUpLoad,
+    // })
+    if (!this.$refs.wrapper) return
       this.scroll = new BScroll(this.$refs.wrapper, {
-        probeType: this.probeType,
-        pullUpLoad: this.pullUpLoad,
-        click: true
+      probeType: this.probeType,
+      click: true,
+      pullUpLoad: this.pullUpLoad
+})
+
+    if(this.probeType === 2 || this.probeType === 3){
+      this.scroll.on('scroll', (position) => {
+        this.$emit('scroll', position);
       })
-      // 监听滚动位置
-      if (this.probeType === 2 || this.probeType === 3) {
-        this.scroll.on('scroll', (position) => {
-          this.$emit('scroll', position)
-        })
-      }
-      // 监听Scroll滚动到底部
-      if (this.pullUpLoad) {
-        this.scroll.on('pullingUp', () => {
-          this.$emit('pullingUp')
-        })
-      }
+    }
+
+
+    if(this.pullUpLoad){
+      this.scroll.on('pullingUp', ()=>{
+      this.$emit('pullingUp');
+    })
+    }
+
+  },
+  methods:{
+    // __initScroll() {
+		//     // 1.初始化BScroll对象
+		//     if (!this.$refs.wrapper) return
+    //     this.scroll = new BScroll(this.$refs.wrapper, {
+    //       probeType: this.probeType,
+    //       click: true,
+    //       pullUpLoad: this.pullUpLoad
+    //     })
+
+    //     // 2.将监听事件回调
+    //     this.scroll.on('scroll', pos => {
+    //       this.$emit('scroll', pos)
+    //     })
+
+    //     // 3.监听上拉到底部
+    //     this.scroll.on('pullingUp', () => {
+    //       console.log('上拉加载');
+    //       this.$emit('pullingUp')
+    //     })
+    //   },
+    scrollTo(x, y, time=300){
       
+      this.scroll && this.scroll.scrollTo(x, y, time);
+      console.log('--------');
     },
-    methods: {
-      scrollTo(x, y, time) {
-        this.scroll && this.scroll.scrollTo(x, y, time)
-      },
-      // 当上拉加载数据加载完毕后，需要调用此方法告诉 better-scroll 数据已加载
-      finishPullUp() {
-        this.scroll && this.scroll.finishPullUp()
-      },
-      refresh(){
-        // console.log('---')
-        this.scroll && this.scroll.refresh()
-      },
-      getScrollY(){
-        return this.scroll ? this.scroll.y : 0
-      }
+    finishPullUp(){
+      this.scroll.finishPullUp();
     },
+    refresh(){
+      //console.log('dasdasd')
+      this.scroll && this.scroll.refresh();
+    },
+    getScrollY(){
+      return this.scroll ? this.scroll.y : 0;
+    }
+  },    
+  watch: {
+    data() {
+      setTimeout(this.refresh, 20)
+    }
   }
+ }
 </script>
 
-<style scoped>
-
+<style lang="" scoped>
 </style>
